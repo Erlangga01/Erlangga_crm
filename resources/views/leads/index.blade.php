@@ -30,10 +30,10 @@
                                 <tr>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Company/Name</th>
+                                        Name</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Contact Person</th>
+                                        Product</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Status</th>
@@ -47,15 +47,15 @@
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $lead->name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $lead->contact_person }}<br>
+                                            {{ $lead->product->name ?? '-' }}<br>
                                             <span class="text-xs text-gray-500">{{ $lead->email }}</span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                @if($lead->status === 'new') bg-blue-100 text-blue-800 
-                                                @elseif($lead->status === 'converted') bg-green-100 text-green-800
-                                                @elseif($lead->status === 'lost') bg-red-100 text-red-800
-                                                @else bg-gray-100 text-gray-800 @endif">
+                                                    @if($lead->status === 'new') bg-blue-100 text-blue-800 
+                                                    @elseif($lead->status === 'converted') bg-green-100 text-green-800
+                                                    @elseif($lead->status === 'lost') bg-red-100 text-red-800
+                                                    @else bg-gray-100 text-gray-800 @endif">
                                                 {{ ucfirst($lead->status) }}
                                             </span>
                                         </td>

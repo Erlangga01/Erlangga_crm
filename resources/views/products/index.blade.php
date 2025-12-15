@@ -46,8 +46,9 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $product->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ number_format($product->price, 0, ',', '.') }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $product->speed }}</td>
+                                        {{ number_format($product->price, 0, ',', '.') }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $product->bandwidth_mbps }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <a href="{{ route('products.edit', $product) }}"
                                             class="text-indigo-600 hover:text-indigo-900 mr-4">Edit</a>

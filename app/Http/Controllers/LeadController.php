@@ -21,7 +21,8 @@ class LeadController extends Controller
      */
     public function create()
     {
-        return view('leads.create');
+        $products = \App\Models\Product::all();
+        return view('leads.create', compact('products'));
     }
 
     /**
@@ -31,10 +32,10 @@ class LeadController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'contact_person' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'nullable|email|max:255',
             'phone' => 'required|string|max:20',
             'address' => 'required|string',
+            'interested_product_id' => 'nullable|exists:products,id',
         ]);
 
         Lead::create($request->all());
@@ -55,7 +56,8 @@ class LeadController extends Controller
      */
     public function edit(Lead $lead)
     {
-        return view('leads.edit', compact('lead'));
+        $products = \App\Models\Product::all();
+        return view('leads.edit', compact('lead', 'products'));
     }
 
     /**
@@ -65,11 +67,11 @@ class LeadController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'contact_person' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'nullable|email|max:255',
             'phone' => 'required|string|max:20',
             'address' => 'required|string',
-            'status' => 'required|in:new,processing,converted,lost',
+            'interested_product_id' => 'nullable|exists:products,id',
+            'status' => 'required|in:New,Contacted,Qualified,Converted,Lost',
         ]);
 
         $lead->update($request->all());

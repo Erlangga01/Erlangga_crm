@@ -12,19 +12,23 @@
                     <form action="{{ route('leads.store') }}" method="POST">
                         @csrf
                         <div class="mb-4">
-                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Company
-                                / Name</label>
+                            <label for="name"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
                             <input type="text" name="name" id="name"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600"
                                 required>
                         </div>
                         <div class="mb-4">
-                            <label for="contact_person"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact
-                                Person</label>
-                            <input type="text" name="contact_person" id="contact_person"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600"
-                                required>
+                            <label for="interested_product_id"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300">Interested
+                                Product</label>
+                            <select name="interested_product_id" id="interested_product_id"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600">
+                                <option value="">Select a product</option>
+                                @foreach($products as $product)
+                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="mb-4">
                             <label for="email"

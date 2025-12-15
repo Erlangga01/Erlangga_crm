@@ -32,7 +32,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'speed' => 'required|integer|min:0',
+            'bandwidth_mbps' => 'required|integer|min:0',
             'description' => 'nullable|string',
         ]);
 
@@ -65,7 +65,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
-            'speed' => 'required|integer|min:0',
+            'bandwidth_mbps' => 'required|integer|min:0',
             'description' => 'nullable|string',
         ]);
 

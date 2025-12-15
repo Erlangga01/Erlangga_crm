@@ -26,9 +26,10 @@
                                 required>
                         </div>
                         <div class="mb-4">
-                            <label for="speed" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Speed
+                            <label for="bandwidth_mbps"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300">Bandwidth
                                 (Mbps)</label>
-                            <input type="number" name="speed" id="speed"
+                            <input type="number" name="bandwidth_mbps" id="bandwidth_mbps"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600"
                                 required>
                         </div>

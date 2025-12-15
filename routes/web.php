@@ -7,9 +7,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/projects/{project}/approve', [\App\Http\Controllers\ProjectController::class, 'approve'])->name('projects.approve');
     Route::patch('/projects/{project}/reject', [\App\Http\Controllers\ProjectController::class, 'reject'])->name('projects.reject');
     Route::patch('/projects/{project}/complete', [\App\Http\Controllers\ProjectController::class, 'complete'])->name('projects.complete');
+
 
     Route::resource('customers', \App\Http\Controllers\CustomerController::class);
 });

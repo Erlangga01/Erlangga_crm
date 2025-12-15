@@ -55,16 +55,43 @@
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $project->product->name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                @if($project->status === 'approved') bg-blue-100 text-blue-800 
-                                                @elseif($project->status === 'completed') bg-green-100 text-green-800
-                                                @elseif($project->status === 'rejected') bg-red-100 text-red-800
-                                                @else bg-yellow-100 text-yellow-800 @endif">
+                                                    @if($project->status === 'approved') bg-blue-100 text-blue-800 
+                                                    @elseif($project->status === 'completed') bg-green-100 text-green-800
+                                                    @elseif($project->status === 'rejected') bg-red-100 text-red-800
+                                                    @else bg-yellow-100 text-yellow-800 @endif">
                                                 {{ ucfirst(str_replace('_', ' ', $project->status)) }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <a href="{{ route('projects.show', $project) }}"
                                                 class="text-indigo-600 hover:text-indigo-900 mr-4">View</a>
+
+                                            @if(auth()->user()->role === 'manager' && $project->status === 'Survey')
+                                                <form action="{{ route('projects.approve', $project) }}" method="POST"
+                                                    class="inline-block">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="text-green-600 hover:text-green-900 mr-2"
+                                                        onclick="return confirm('Approve this project?')">Approve</button>
+                                                </form>
+                                                <form action="{{ route('projects.reject', $project) }}" method="POST"
+                                                    class="inline-block">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="text-red-600 hover:text-red-900"
+                                                        onclick="return confirm('Reject this project?')">Reject</button>
+                                                </form>
+                                            @endif
+
+                                            @if($project->status === 'Installation')
+                                                <form action="{{ route('projects.complete', $project) }}" method="POST"
+                                                    class="inline-block">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="text-blue-600 hover:text-blue-900 ml-2"
+                                                        onclick="return confirm('Mark installation as complete?')">Complete</button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

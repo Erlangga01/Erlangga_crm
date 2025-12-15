@@ -44,12 +44,13 @@ class ProjectController extends Controller
         Project::create([
             'lead_id' => $request->lead_id,
             'product_id' => $request->product_id,
-            'notes' => $request->notes,
-            'status' => 'pending_approval',
+            'sales_id' => $request->user()->id, // Capture Sales ID
+            'status' => 'Survey', // Initial status per System Analysis
+            'is_manager_approved' => false,
         ]);
 
-        // Optionally update lead status to processing
-        Lead::where('id', $request->lead_id)->update(['status' => 'processing']);
+        // Update lead status
+        Lead::where('id', $request->lead_id)->update(['status' => 'Converted']); // Or 'Qualified'? System Analysis says 'Converted' when project starts? "Lead menghilang dari list Lead dan masuk ke list Project" -> usually Converted.
 
         return redirect()->route('projects.index')->with('success', 'Project created successfully.');
     }
@@ -68,13 +69,14 @@ class ProjectController extends Controller
      */
     public function approve(Project $project)
     {
-        if (Auth::user()->role !== 'manager') {
-            return redirect()->back()->with('error', 'Unauthorized action.');
-        }
+        $project->update([
+            'status' => 'Installation',
+            'is_manager_approved' => true,
+            'approved_by' => request()->user()->id,
+            'approved_at' => now(),
+        ]);
 
-        $project->update(['status' => 'approved']);
-
-        return redirect()->back()->with('success', 'Project approved.');
+        return redirect()->back()->with('success', 'Project approved. Ready for installation.');
     }
 
     /**
@@ -82,12 +84,7 @@ class ProjectController extends Controller
      */
     public function reject(Project $project)
     {
-        if (Auth::user()->role !== 'manager') {
-            return redirect()->back()->with('error', 'Unauthorized action.');
-        }
-
-        $project->update(['status' => 'rejected']);
-        $project->lead->update(['status' => 'lost']);
+        $project->update(['status' => 'Cancelled']);
 
         return redirect()->back()->with('success', 'Project rejected.');
     }
@@ -97,22 +94,22 @@ class ProjectController extends Controller
      */
     public function complete(Project $project)
     {
-        // Allow sales or manager to mark complete? Let's say both.
-
         $project->update([
-            'status' => 'completed',
+            'status' => 'Completed',
             'installation_date' => now(),
         ]);
 
-        $project->lead->update(['status' => 'converted']);
-
         // Create Customer Record
+        // Generate Account Number
+        $accountNumber = 'CUST-' . date('Y') . '-' . str_pad($project->id, 4, '0', STR_PAD_LEFT);
+
         Customer::create([
+            'user_account_number' => $accountNumber,
+            'project_id' => $project->id,
             'name' => $project->lead->name,
-            'email' => $project->lead->email,
-            'phone' => $project->lead->phone,
-            'address' => $project->lead->address,
-            'subscription_date' => now(),
+            'billing_address' => $project->lead->address, // Assuming billing address same as lead address
+            'subscription_start_date' => now(),
+            'status' => 'Active',
         ]);
 
         return redirect()->back()->with('success', 'Project completed and Customer created.');

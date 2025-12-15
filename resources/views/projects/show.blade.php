@@ -28,8 +28,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                             <h4 class="font-bold text-lg mb-4">Lead Information</h4>
-                            <p><strong>Company:</strong> {{ $project->lead->name }}</p>
-                            <p><strong>Contact:</strong> {{ $project->lead->contact_person }}</p>
+                            <p><strong>Name:</strong> {{ $project->lead->name }}</p>
                             <p><strong>Email:</strong> {{ $project->lead->email }}</p>
                             <p><strong>Phone:</strong> {{ $project->lead->phone }}</p>
                             <p><strong>Address:</strong> {{ $project->lead->address }}</p>
@@ -42,13 +41,14 @@
                             <p><strong>Notes:</strong> {{ $project->notes ?? '-' }}</p>
                             @if($project->installation_date)
                                 <p class="mt-2 text-green-600 font-semibold">Installed on:
-                                    {{ \Carbon\Carbon::parse($project->installation_date)->format('d M Y') }}</p>
+                                    {{ \Carbon\Carbon::parse($project->installation_date)->format('d M Y') }}
+                                </p>
                             @endif
                         </div>
                     </div>
 
                     <div class="mt-8 flex space-x-4 border-t pt-6">
-                        @if(auth()->user()->role === 'manager' && $project->status === 'pending_approval')
+                        @if(auth()->user()->role === 'manager' && $project->status === 'Survey')
                             <form action="{{ route('projects.approve', $project) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
@@ -68,7 +68,7 @@
                             </form>
                         @endif
 
-                        @if($project->status === 'approved')
+                        @if($project->status === 'Installation')
                             <form action="{{ route('projects.complete', $project) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
